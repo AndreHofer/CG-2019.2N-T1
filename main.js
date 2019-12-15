@@ -1,15 +1,8 @@
 var fundo = "./fundo.jpg";
-S
+
 var scene, camera, renderer;
-var rigth_cube, left_cube, top_cube, bottom_cube;
-var velocity = 0.04;
 
-var player = {
-  id: 'null',
-  shape: new THREE.Mesh()
-}
-
-var texture = new THREE.TextureLoader().load(emilio_face_url);
+var texture = new THREE.TextureLoader().load(fundo);
 var material = new THREE.MeshBasicMaterial();
 material.map = texture;
 
@@ -35,9 +28,6 @@ const init = () => {
   scene.add(light);
 
   initializeBorders();
-
-  document.addEventListener('keydown', handleKeydown, false);
-  render();
 }
 
 const initializeBorders = () => {
@@ -65,18 +55,7 @@ const initializeBorders = () => {
   scene.add(line);
 }
 
-const initializePlayer = () => {
-  const geometry = new THREE.CircleGeometry(0.25, 32);
-  player.shape = new THREE.Mesh(geometry, material);
-  scene.add(player.shape);
-}
 
-  const key_press = comand.key;
-  const moveFunction = accepted_moves[key_press];
-
-  if (moveFunction) moveFunction();
-}
-  
 const render = () => {
   requestAnimationFrame(render);
   renderer.render(scene, camera);
