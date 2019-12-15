@@ -38,7 +38,7 @@ const initializeBorders = () => {
   rigth_cube.position.set(4.5, 0, 0.5);
   left_cube = new THREE.Mesh(geometry, material);
   left_cube.position.set(-4.5, 0, 0.5);
-
+  
   geometry = new THREE.BoxGeometry(9, 1.5, 1);
   top_cube = new THREE.Mesh(geometry, material);
   top_cube.position.set(0, 2.5, 0.5);
@@ -51,7 +51,7 @@ const initializeBorders = () => {
   cube.position.set(0, 0, 0);
 
   const edges = new THREE.EdgesGeometry(cube.geometry);
-  const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+  const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x555555 }));
   scene.add(line);
 }
 
