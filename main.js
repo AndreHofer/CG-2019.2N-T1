@@ -1,3 +1,6 @@
+// Three.js - Fundamentals 3 cubes
+// from https://threejsfundamentals.org/threejs/threejs-fundamentals-3-cubes.html
+
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/build/three.module.js';
 
 function main() {
@@ -24,7 +27,7 @@ function main() {
   const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
-  const geometry = new THREE.SphereBufferGeometry(boxWidth, boxHeight, boxDepth);
+  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
   function makeInstance(geometry, color, x) {
     const material = new THREE.MeshPhongMaterial({color});
