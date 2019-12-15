@@ -1,65 +1,137 @@
-var fundo = "./fundo.jpg";
+import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/build/three.module.js';
 
-var scene, camera, renderer;
+import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/examples/jsm/libs/stats.module.js';
 
-var texture = new THREE.TextureLoader().load(fundo);
-var material = new THREE.MeshBasicMaterial();
-material.map = texture;
+import { OrbitControls } from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/examples/jsm/controls/OrbitControls.js';
 
-const init = () => {
-  scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 3;
+import { GUI } from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/examples/jsm/libs/dat.gui.module.js';
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setClearColor("#000");
-  renderer.setSize(window.innerWidth, window.innerHeight);
+import { GLTFLoader } from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/examples/jsm/loaders/GLTFLoader.js';
 
-  document.body.appendChild(renderer.domElement);
-  window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
+var container, stats, clock, gui, mixer, actions, activeAction;
+var camera, scene, renderer, model, controls;
 
-    camera.updateProjectionMatrix();
-  });
-
-  const light = new THREE.PointLight(0xFFFFFF, 1, 1000);
-  light.position.set(0, 0, 0);
-  scene.add(light);
-
-  initializeBorders();
-}
-
-const initializeBorders = () => {
-  let geometry = new THREE.BoxGeometry(1.5, 5, 1);
-  let material = new THREE.MeshBasicMaterial({ depthWrite: false, depthTest: false })
-
-  rigth_cube = new THREE.Mesh(geometry, material);
-  rigth_cube.position.set(4.5, 0, 0.5);
-  left_cube = new THREE.Mesh(geometry, material);
-  left_cube.position.set(-4.5, 0, 0.5);
-  
-  geometry = new THREE.BoxGeometry(9, 1.5, 1);
-  top_cube = new THREE.Mesh(geometry, material);
-  top_cube.position.set(0, 2.5, 0.5);
-  bottom_cube = new THREE.Mesh(geometry, material);
-  bottom_cube.position.set(0, -2.5, 0.5);
-
-  geometry = new THREE.BoxGeometry(8.5, 4.5, 0.00001);
-  material = new THREE.MeshBasicMaterial({ depthWrite: false, depthTest: false })
-  const cube = new THREE.Mesh(geometry, material);
-  cube.position.set(0, 0, 0);
-
-  const edges = new THREE.EdgesGeometry(cube.geometry);
-  const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x555555 }));
-  scene.add(line);
-}
-
-
-const render = () => {
-  requestAnimationFrame(render);
-  renderer.render(scene, camera);
-
-}
+var xSpeed = 10;
+var zSpeed = 10;
 
 init();
+animate();
+
+function init() {
+
+    container = document.createElement( 'div' );
+    document.body.appendChild( container );
+
+    camera = new THREE.PerspectiveCamera( 20, window.innerWidth / window.innerHeight, 0.25, 1000 );
+    camera.position.set( 0, 20, 30 );
+    camera.lookAt( new THREE.Vector3( 0, 2, 0) );
+
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0x000000 );
+    scene.fog = new THREE.Fog( 0x000000, 2, 1000 );
+
+    clock = new THREE.Clock();
+
+    // lights
+    var light = new THREE.HemisphereLight( 0x000000, 0x004400 );
+    light.position.set( 0, 10, 0 );
+    scene.add( light );
+    light = new THREE.DirectionalLight( 0xffffff );
+    light.position.set( 0, 20, 10 );
+    scene.add( light );
+
+    // ground
+    var gt = new THREE.TextureLoader().load("./fundo.jpg");
+    var gg = new THREE.PlaneBufferGeometry(1000,1000);
+    var gm = new THREE.MeshPhongMaterial({ color: 0xffffff, map: gt });
+
+    var ground = new THREE.Mesh(gg, gm);
+    ground.rotation.x = - Math.PI / 2;
+    ground.material.map.repeat.set(25, 25);
+    ground.material.map.wrapS = ground.material.map.wrapT = THREE.RepeatWrapping;
+    ground.receiveShadow = true;
+
+    scene.add(ground);
+
+    /*/ pokemon
+    var loader = new GLTFLoader();
+    loader.load( './pokemon/Magnemite/scene.gltf', function ( gltf ) {
+        model = gltf.scene;
+        scene.add( model );
+        model.scale.set(.3, .3, .3);
+        model.position.y += 1;
+        createGUI( model, gltf.animations );
+    }, undefined, function ( e ) {
+        console.error( e );
+    } );*/
+    
+    renderer = new THREE.WebGLRenderer( { antialias: true } );
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.gammaOutput = true;
+    renderer.gammaFactor = 2.2;
+    container.appendChild( renderer.domElement );
+
+    window.addEventListener('resize', onWindowResize, false );
+    window.addEventListener('keydown', onDocumentKeyDown, false );
+
+    stats = new Stats();
+    container.appendChild( stats.dom );
+
+    controls = new OrbitControls( camera, renderer.domElement );
+
+}
+
+/*function createGUI( model, animations ) {
+    gui = new GUI();
+    mixer = new THREE.AnimationMixer( model );
+    actions = {};
+
+    var clip = animations[0];
+    var action = mixer.clipAction( clip );
+    actions[ clip.name ] = action;
+
+    activeAction = actions[ 'Take 001' ];
+    activeAction.play();
+}*/
+
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+function onDocumentKeyDown(e) {
+    var keyCode = event.which;
+    if (e.code != 'Space'){
+        if (keyCode == 87) {
+            model.position.z += zSpeed;
+        } else if (keyCode == 83) {
+            model.position.z -= zSpeed;
+        } else if (keyCode == 65) {
+            model.position.x += xSpeed;
+        } else if (keyCode == 68) {
+            model.position.x -= xSpeed;
+        }
+    }else{
+        if (activeAction._clip.name == 'Take 001') {
+            activeAction.paused = true;
+            activeAction._clip.name = ''
+        }else{
+            activeAction._clip.name = 'Take 001'
+            activeAction.paused = false;
+        }
+    }
+};
+
+function animate() {
+    var dt = clock.getDelta();
+    if ( mixer ) mixer.update( dt );
+    requestAnimationFrame( animate );
+    renderer.render( scene, camera );
+    stats.update();
+    // required if controls.enableDamping or controls.autoRotate are set to true
+    controls.update();
+
+}
