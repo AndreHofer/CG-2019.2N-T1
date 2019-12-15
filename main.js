@@ -1,5 +1,5 @@
-// Three.js - Fundamentals 3 cubes
-// from https://threejsfundamentals.org/threejs/threejs-fundamentals-3-cubes.html
+// Three.js - Fundamentals with light
+// from https://threejsfundamentals.org/threejs/threejs-fundamentals-with-light.html
 
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/build/three.module.js';
 
@@ -29,32 +29,16 @@ function main() {
   const boxDepth = 1;
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-  function makeInstance(geometry, color, x) {
-    const material = new THREE.MeshPhongMaterial({color});
+  const material = new THREE.MeshPhongMaterial({color: 0x44aa88});  // greenish blue
 
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    cube.position.x = x;
-
-    return cube;
-  }
-
-  const cubes = [
-    makeInstance(geometry, 0x44aa88,  0),
-    makeInstance(geometry, 0x8844aa, -2),
-    makeInstance(geometry, 0xaa8844,  2),
-  ];
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
 
   function render(time) {
     time *= 0.001;  // convert time to seconds
 
-    cubes.forEach((cube, ndx) => {
-      const speed = 1 + ndx * .1;
-      const rot = time * speed;
-      cube.rotation.x = rot;
-      cube.rotation.y = rot;
-    });
+    cube.rotation.x = time;
+    cube.rotation.y = time;
 
     renderer.render(scene, camera);
 
