@@ -74,6 +74,61 @@ function init() {
 
 
 
+function createGUI( model, animations ) {
+    gui = new GUI();
+    mixer = new THREE.AnimationMixer( model );
+    actions = {};
+
+    var clip = animations[0];
+    var action = mixer.clipAction( clip );
+    actions[ clip.name ] = action;
+
+    activeAction = actions[ 'Take 001' ];
+    activeAction.play();
+}
+
+
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+function onDocumentKeyDown(e) {
+    var keyCode = event.which;
+    if (e.code != 'Space'){
+        if (keyCode == 87) {
+            model.position.z += zSpeed;
+        } else if (keyCode == 83) {
+            model.position.z -= zSpeed;
+        } else if (keyCode == 65) {
+            model.position.x += xSpeed;
+        } else if (keyCode == 68) {
+            model.position.x -= xSpeed;
+        }
+    }else{
+        if (activeAction._clip.name == 'Take 001') {
+            activeAction.paused = true;
+            activeAction._clip.name = ''
+        }else{
+            activeAction._clip.name = 'Take 001'
+            activeAction.paused = false;
+        }
+    }
+}
+
+function animate() {
+    var dt = clock.getDelta();
+    if ( mixer ) mixer.update( dt );
+    requestAnimationFrame( animate );
+    renderer.render( scene, camera );
+    stats.update();
+    // required if controls.enableDamping or controls.autoRotate are set to true
+    controls.update();
+
+}
+
+
 
 
 
