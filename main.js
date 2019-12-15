@@ -1,6 +1,3 @@
-// Three.js - Fundamentals 3 cubes
-// from https://threejsfundamentals.org/threejs/threejs-fundamentals-3-cubes.html
-
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/build/three.module.js';
 
 function main() {
@@ -24,6 +21,19 @@ function main() {
     scene.add(light);
   }
 
+  // ground
+    var gt = new THREE.TextureLoader().load("./fundo.jpg");
+    var gg = new THREE.PlaneBufferGeometry(1000,1000);
+    var gm = new THREE.MeshPhongMaterial({ color: 0xffffff, map: gt });
+
+    var ground = new THREE.Mesh(gg, gm);
+    ground.rotation.x = - Math.PI / 2;
+    ground.material.map.repeat.set(25, 25);
+    ground.material.map.wrapS = ground.material.map.wrapT = THREE.RepeatWrapping;
+    ground.receiveShadow = true;
+
+    scene.add(ground);
+  
   const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
