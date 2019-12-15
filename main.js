@@ -115,7 +115,7 @@ function onDocumentKeyDown(e) {
             activeAction.paused = false;
         }
     }
-}
+};
 
 function animate() {
     var dt = clock.getDelta();
