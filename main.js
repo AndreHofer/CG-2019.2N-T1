@@ -1,4 +1,73 @@
+// Three.js - Fundamentals 3 cubes
+// from https://threejsfundamentals.org/threejs/threejs-fundamentals-3-cubes.html
+
 import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/build/three.module.js';
+
+function main() {
+  const canvas = document.querySelector('#c');
+  const renderer = new THREE.WebGLRenderer({canvas});
+
+  const fov = 75;
+  const aspect = 2;  // the canvas default
+  const near = 0.1;
+  const far = 5;
+  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+  camera.position.z = 2;
+
+  const scene = new THREE.Scene();
+
+  {
+    const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(-1, 2, 4);
+    scene.add(light);
+  }
+
+  const boxWidth = 1;
+  const boxHeight = 1;
+  const boxDepth = 1;
+  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+
+  function makeInstance(geometry, color, x) {
+    const material = new THREE.MeshPhongMaterial({color});
+
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    cube.position.x = x;
+
+    return cube;
+  }
+
+  const cubes = [
+    makeInstance(geometry, 0x44aa88,  0),
+    makeInstance(geometry, 0x8844aa, -2),
+    makeInstance(geometry, 0xaa8844,  2),
+  ];
+
+  function render(time) {
+    time *= 0.001;  // convert time to seconds
+
+    cubes.forEach((cube, ndx) => {
+      const speed = 1 + ndx * .1;
+      const rot = time * speed;
+      cube.rotation.x = rot;
+      cube.rotation.y = rot;
+    });
+
+    renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+}
+
+main();
+
+
+/*import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/build/three.module.js';
 
 import Stats from 'https://threejsfundamentals.org/threejs/resources/threejs/r110/examples/jsm/libs/stats.module.js';
 
@@ -53,7 +122,7 @@ function init() {
 
     scene.add(ground);
 
-    /*/ pokemon
+aqui    // pokemon
     var loader = new GLTFLoader();
     loader.load( './pokemon/Magnemite/scene.gltf', function ( gltf ) {
         model = gltf.scene;
@@ -63,7 +132,7 @@ function init() {
         createGUI( model, gltf.animations );
     }, undefined, function ( e ) {
         console.error( e );
-    } );*/
+end    } );
     
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -79,59 +148,10 @@ function init() {
     container.appendChild( stats.dom );
 
     controls = new OrbitControls( camera, renderer.domElement );
-
 }
 
-/*function createGUI( model, animations ) {
-    gui = new GUI();
-    mixer = new THREE.AnimationMixer( model );
-    actions = {};
-
-    var clip = animations[0];
-    var action = mixer.clipAction( clip );
-    actions[ clip.name ] = action;
-
-    activeAction = actions[ 'Take 001' ];
-    activeAction.play();
-}*/
-
-
-function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
-
-/*function onDocumentKeyDown(e) {
-    var keyCode = event.which;
-    if (e.code != 'Space'){
-        if (keyCode == 87) {
-            model.position.z += zSpeed;
-        } else if (keyCode == 83) {
-            model.position.z -= zSpeed;
-        } else if (keyCode == 65) {
-            model.position.x += xSpeed;
-        } else if (keyCode == 68) {
-            model.position.x -= xSpeed;
-        }
-    }else{
-        if (activeAction._clip.name == 'Take 001') {
-            activeAction.paused = true;
-            activeAction._clip.name = ''
-        }else{
-            activeAction._clip.name = 'Take 001'
-            activeAction.paused = false;
-        }
-    }
-};
-
-function animate() {
-    var dt = clock.getDelta();
-    if ( mixer ) mixer.update( dt );
-    requestAnimationFrame( animate );
-    renderer.render( scene, camera );
-    stats.update();
-    // required if controls.enableDamping or controls.autoRotate are set to true
-    controls.update();
-
-}*/
+*/
