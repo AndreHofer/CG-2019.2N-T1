@@ -102,7 +102,7 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-function onDocumentKeyDown(e) {
+/*function onDocumentKeyDown(e) {
     var keyCode = event.which;
     if (e.code != 'Space'){
         if (keyCode == 87) {
@@ -134,4 +134,4 @@ function animate() {
     // required if controls.enableDamping or controls.autoRotate are set to true
     controls.update();
 
-}
+}*/
