@@ -37,6 +37,7 @@ var profes = [
 ]
 var textures = [
     'img/fernando1.webp',
+
     'img/fernando2.webp'
 ]
 
