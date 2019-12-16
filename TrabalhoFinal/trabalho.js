@@ -37,7 +37,7 @@ var profes = [
 ]
 var textures = [
     'img/fernando1.webp',
-    'img/Fernendo9.webp'
+    'img/fernendo9.webp'
 ]
 
 for(var i = 0; i < profes.length; i++){
