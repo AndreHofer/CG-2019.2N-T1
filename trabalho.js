@@ -22,7 +22,7 @@ camera.position.z = 10;
 camera.rotation.x = - (Math.PI / 8);
 camera.position.y = 4;
 
-var backImagem = new THREE.TextureLoader().load('./windows.jpg');
+var backImagem = new THREE.TextureLoader().load('windows.jpg');
 var backMaterial = new THREE.MeshBasicMaterial( {map: backImagem} );    
 var backGeometry = new THREE.PlaneBufferGeometry(10,10);
 var background = new THREE.Mesh( backGeometry, backMaterial);
@@ -36,8 +36,8 @@ var profes = [
 
 ]
 var textures = [
-    './fernando1.webp',
-    './denio.webp'
+    'fernando1.webp',
+    'denio.webp'
 ]
 
 for(var i = 0; i < profes.length; i++){
