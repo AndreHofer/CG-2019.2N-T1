@@ -22,7 +22,7 @@ camera.position.z = 10;
 camera.rotation.x = - (Math.PI / 8);
 camera.position.y = 4;
 
-var backImagem = new THREE.TextureLoader().load('windows.jpg');
+var backImagem = new THREE.TextureLoader().load('img/windows.jpg');
 var backMaterial = new THREE.MeshBasicMaterial( {map: backImagem} );    
 var backGeometry = new THREE.PlaneBufferGeometry(10,10);
 var background = new THREE.Mesh( backGeometry, backMaterial);
@@ -32,12 +32,12 @@ background.position.z = -0.0001;
 var sentido = [x = 1, y = 1];
 var profes = [
     {nome:'Fernando', geometry: new THREE.PlaneBufferGeometry(1,1), plane: null, sentido:[1,1]},
-    {nome:'Denio', geometry: new THREE.PlaneBufferGeometry(1,1), plane: null, sentido:[1,1] }
+    {nome:'Fernandoo', geometry: new THREE.PlaneBufferGeometry(1,1), plane: null, sentido:[1,1] }
 
 ]
 var textures = [
-    'fernando1.webp',
-    'denio.webp'
+    'img/fernando1.webp',
+    'img/Fernendo9.webp'
 ]
 
 for(var i = 0; i < profes.length; i++){
