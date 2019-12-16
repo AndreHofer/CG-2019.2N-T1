@@ -22,7 +22,7 @@ camera.position.z = 10;
 camera.rotation.x = - (Math.PI / 8);
 camera.position.y = 4;
 
-var backImagem = new THREE.TextureLoader().load('img/windows.jpg');
+var backImagem = new THREE.TextureLoader().load('./windows.jpg');
 var backMaterial = new THREE.MeshBasicMaterial( {map: backImagem} );    
 var backGeometry = new THREE.PlaneBufferGeometry(10,10);
 var background = new THREE.Mesh( backGeometry, backMaterial);
@@ -36,8 +36,8 @@ var profes = [
 
 ]
 var textures = [
-    'img/fernando1.webp',
-    'img/denio.webp'
+    './fernando1.webp',
+    './denio.webp'
 ]
 
 for(var i = 0; i < profes.length; i++){
@@ -90,28 +90,3 @@ var animateTeatchers = function(){
 animate();
 
 var select = 0; 
-/*function onKeyDown(event) {
-    var keyCode = event.which;
-    var speed = 0.01;
-    for(var i = 0; i < profes.length; i++) { 
-        if(keyCode >= 48 && keyCode <= 57){
-            select = keyCode - 48;
-        }
-        if (keyCode == 87) {
-            profes[select].plane.position.y += speed;
-        } else if (keyCode == 83) {
-            profes[select].plane.position.y -= speed;
-        } else if (keyCode == 65) {
-            profes[select].plane.position.x -= speed;
-        } else if (keyCode == 68) {
-            profes[select].plane.position.x += speed;
-        } else if (keyCode == 81) {
-            profes[select].plane.position.z -= speed;
-        } else if (keyCode == 69) {
-            profes[select].plane.position.z += speed;
-        } else if (keyCode == 32) {
-            profes[select].plane.position.set(0, 0, 0);
-        }
-    }
-};*/
-// document.addEventListener("keydown", onKeyDown, false);
